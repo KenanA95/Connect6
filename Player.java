@@ -4,12 +4,12 @@ public class Player {
 
     String playerName;
     private int boardSize;
-    PlayerBoard gameBoard;
+    GameBoard gameBoard;
 
     Player(String playerName, int boardSize){
         this.playerName = playerName;
         this.boardSize = boardSize;
-        this.gameBoard = new PlayerBoard(boardSize);
+        this.gameBoard = new GameBoard(boardSize);
     }
 
     /**

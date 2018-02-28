@@ -99,7 +99,7 @@ public class EvaluateBoard {
         // Only check the other diagonals if necessary
         if(leftToRight.maxInARow < 6){
             // Flip the board and repeat for right to left
-            String [][] reverseBoard = PlayerBoard.getBoardReversed(board);
+            String [][] reverseBoard = GameBoard.getBoardReversed(board);
             Score rightToLeft = diagonalCount(reverseBoard, turn);
             if(rightToLeft.maxInARow > leftToRight.maxInARow){
                 return rightToLeft;

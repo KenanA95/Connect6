@@ -2,7 +2,7 @@ public class AlphaBeta {
 
     static Coordinates bestMove = new Coordinates(0, 0);
 
-    public static int minMax(PlayerBoard gameBoard, String turn, int maxDepth, int depth, int alpha,
+    public static int minMax(GameBoard gameBoard, String turn, int maxDepth, int depth, int alpha,
                              int beta, boolean maxPlayer, int index){
 
         // If its a terminal node return the utility value
@@ -19,7 +19,7 @@ public class AlphaBeta {
 
     }
 
-     private static int getMax(PlayerBoard gameBoard, String turn, int maxDepth, int depth, int alpha, int beta, int index){
+    private static int getMax(GameBoard gameBoard, String turn, int maxDepth, int depth, int alpha, int beta, int index){
 
         int best = Integer.MIN_VALUE;
         boolean maxPlayer = false;
@@ -31,9 +31,9 @@ public class AlphaBeta {
                 maxPlayer = true;
             }
 
-            String [][] boardCopy = PlayerBoard.copyBoard(gameBoard.board);
+            String [][] boardCopy = GameBoard.copyBoard(gameBoard.board);
             boardCopy[move.y][move.x] = turn;
-            PlayerBoard childBoard = new PlayerBoard(boardCopy, gameBoard.availableMoves);
+            GameBoard childBoard = new GameBoard(boardCopy, gameBoard.availableMoves);
             int val = minMax(childBoard, turn, maxDepth,depth+1, alpha, beta, maxPlayer, index++);
 
             if(val > best){
@@ -52,7 +52,7 @@ public class AlphaBeta {
         return best;
     }
 
-    private static int getMin(PlayerBoard gameBoard, String turn, int maxDepth, int depth, int alpha, int beta, int index){
+    private static int getMin(GameBoard gameBoard, String turn, int maxDepth, int depth, int alpha, int beta, int index){
         int best = Integer.MAX_VALUE;
         boolean maxPlayer = true;
 
@@ -65,7 +65,7 @@ public class AlphaBeta {
 
             String [][] boardCopy = GameBoard.copyBoard(gameBoard.board);
             boardCopy[move.y][move.x] = turn;
-            PlayerBoard childBoard = new PlayerBoard(boardCopy, gameBoard.availableMoves);
+            GameBoard childBoard = new GameBoard(boardCopy, gameBoard.availableMoves);
 
             int val = minMax(childBoard, turn, maxDepth,depth+1, alpha, beta, maxPlayer, index++);
 
@@ -84,7 +84,7 @@ public class AlphaBeta {
         return best;
     }
 
-    private static int utilityScore(PlayerBoard gameBoard, String turn, boolean maxPlayer){
+    private static int utilityScore(GameBoard gameBoard, String turn, boolean maxPlayer){
 
         int utility = 0;
         Score score = maxScore(gameBoard.board, turn);

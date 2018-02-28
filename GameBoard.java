@@ -4,14 +4,27 @@ class GameBoard {
 
     int boardSize;
     String[][] board;
+    ArrayList<Coordinates> availableMoves;
 
     GameBoard(int boardSize){
         this.boardSize = boardSize;
         this.board = initBoard(boardSize);
+        this.availableMoves = new ArrayList<>();
+
+        int x = (boardSize-1)/2;
+        int y = (boardSize-1)/2;
+        ArrayList<Coordinates> neighbors = getNeighborCoordinates(x, y);
+        this.availableMoves.addAll(neighbors);
+    }
+
+    GameBoard(String[][] board, ArrayList<Coordinates> availableMoves){
+        this.board = board;
+        this.boardSize = board.length;
+        this.availableMoves = availableMoves;
     }
 
     /**
-     * Run the game between the two players
+     * Initialize the 2d array with the center tile set to black
      * @param boardSize Board dimensions
      * @return 2d array representing the board with center tile set to black
      */
@@ -47,6 +60,41 @@ class GameBoard {
             board[currentMove.y1][currentMove.x1] = "W";
             board[currentMove.y2][currentMove.x2] = "W";
         }
+
+        availableMoves = updateAvailableMoves(currentMove.x1, currentMove.y1);
+        availableMoves = updateAvailableMoves(currentMove.x2, currentMove.y2);
+    }
+
+    /**
+     * Update the move available to a player
+     * @param x The x coordinate
+     * @param y The y coordinate
+     * @return List of the moves available for player
+     */
+    ArrayList<Coordinates> updateAvailableMoves(int x, int y){
+
+        // Make a copy to avoid concurrency issues
+        ArrayList<Coordinates> moves = new ArrayList<>(availableMoves);
+
+        // The move made is no longer available
+        for(Coordinates coordinates: moves){
+            if(coordinates.equalTo(x, y)){
+                moves.remove(coordinates);
+                break;
+            }
+        }
+
+        // The newly available moves are the empty neighboring tiles of the stone placed. Also don't
+        // add duplicates
+        ArrayList<Coordinates> neighbors = getNeighborCoordinates(x, y);
+
+        for(Coordinates neighbor: neighbors){
+            if(board[neighbor.y][neighbor.x].equals("E") && Coordinates.getIndex(availableMoves, neighbor) == -1){
+                moves.add(neighbor);
+            }
+        }
+
+        return moves;
     }
 
     /**
@@ -183,5 +231,94 @@ class GameBoard {
         }
 
         return copy;
+
     }
+    /**
+     * Reverse a 2d array. Used to check for a diagonal win instead of having two separate diagonal checks
+     * @param board The 2d board to flip
+     * @return The reversed/flipped board
+     */
+    static String[][] getBoardReversed(String[][] board){
+        String [][] reversedBoard = new String[board.length][board.length];
+
+        for(int i=0; i<board.length; i++){
+            String[] row = board[i];
+            Collections.reverse(Arrays.asList(row));
+            reversedBoard[i] = row;
+        }
+        return reversedBoard;
+    }
+}
+
+class Coordinates {
+
+    int x;
+    int y;
+
+    Coordinates(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+
+    /**
+     * Search a list of coordinates
+     * @param coordinatesList The list of the coordinates to search through
+     * @param coordinate The coordinate to search for
+     * @return The index of the found coordinates. -1 if it does not exist
+     */
+    public static int getIndex(ArrayList<Coordinates> coordinatesList, Coordinates coordinate){
+
+        ListIterator<Coordinates> iterator = coordinatesList.listIterator();
+
+        while(iterator.hasNext()){
+            if(iterator.next().equalTo(coordinate.x, coordinate.y)){
+                return iterator.nextIndex();
+            }
+        }
+
+        return -1;
+    }
+
+    /**
+     * Check if the points are equal
+     * @param x The x coordinate
+     * @param y The y coordinate
+     * @return True if the coordinates are equal and false otherwise
+     */
+    public boolean equalTo(int x, int y){
+        return (this.x == x && this.y == y);
+    }
+
+    /**
+     * Game play coordinates starts with the bottom left corner as (1. 1) convert to 2d array indices
+     * @param move Move to convert from the display coordinates to the array indices
+     * @param boardSize Size of the board
+     * @return The move represented as standard array indices
+     */
+    static Move toArrayCoordinates(Move move, int boardSize){
+        Coordinates firstCoordinates = toArrayCoordinates(new Coordinates(move.x1, move.y1), boardSize);
+        Coordinates secondCoordinates = toArrayCoordinates(new Coordinates(move.x2, move.y2), boardSize);
+        return new Move(firstCoordinates.x, firstCoordinates.y, secondCoordinates.x, secondCoordinates.y);
+    }
+
+    /**
+     * Game play coordinates starts with the bottom left corner as (1. 1) convert to 2d array indices
+     * @param coordinates Coordinates to convert from the display coordinates to the array indices
+     * @param boardSize Size of the board
+     * @return The move represented as standard array indices
+     */
+    private static Coordinates toArrayCoordinates(Coordinates coordinates, int boardSize){
+        return new Coordinates(coordinates.x -1, Math.abs(coordinates.y-boardSize));
+    }
+
+    /**
+     * 2d array indices to game play coordinates starts that have the bottom left corner as (1. 1)
+     * @param coordinates Coordinates to convert from array indices to the display coordinates
+     * @param boardSize Size of the board
+     * @return The move represented as the display / game play coordinates
+     */
+    static Coordinates toDisplayCoordinates(Coordinates coordinates, int boardSize){
+        return new Coordinates(coordinates.x + 1, Math.abs(coordinates.y-boardSize));
+    }
+
 }
