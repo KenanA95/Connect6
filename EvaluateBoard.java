@@ -1,10 +1,3 @@
-/**
- * Class Name: EvaluateBoard.java
- * Author's Name: Kenan Alkiek and Zhenpeng Li
- * Date: 2/25/18
- * Description of the class: Analyze stones in a row and empty spaces on a board
- */
-
 public class EvaluateBoard {
 
     /**

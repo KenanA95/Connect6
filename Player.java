@@ -1,9 +1,3 @@
-/**
- * Class Name: Player.java
- * Author's Name: Kenan Alkiek and Zhenpeng Li
- * Date: 2/25/18
- */
-
 public class Player {
 
     private final int MAX_DEPTH = 3;

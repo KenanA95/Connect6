@@ -1,12 +1,5 @@
 import java.util.*;
 
-/**
- * Class Name: GameBoard.java
- * Author's Name: Kenan Alkiek and Zhenpeng Li
- * Date: 2/25/18
- * Description of the class: Board used by the driver to play the game
- */
-
 class GameBoard {
 
     int boardSize;
@@ -93,12 +86,7 @@ class GameBoard {
         return true;
     }
 
-    /**
-     * Check if a point is in bounds on the board
-     * @param x The x coordinate
-     * @param y The y coordinate
-     * @return True if the coordinates are in bounds. False if they are out of bounds
-     */
+
     private boolean inBounds(int x, int y){
         return (x > -1 && x < boardSize && y > -1 && y < boardSize);
     }
@@ -114,10 +102,6 @@ class GameBoard {
         return false;
     }
 
-    /**
-     * Check if the game is over
-     * @return True if the game is over from a draw or player win
-     */
     public boolean isGameOver(){
         if(boardIsFull()){
             return true;
@@ -129,10 +113,6 @@ class GameBoard {
         return (blackWins || whiteWins);
     }
 
-    /**
-     * Check if the board is full
-     * @return True if the board is full and false otherwise
-     */
     boolean boardIsFull(){
         for(int i=0; i<this.boardSize; i++){
             for(int j=0; j<this.boardSize; j++){
@@ -144,9 +124,6 @@ class GameBoard {
         return true;
     }
 
-    /**
-     * Output the board for user display
-     */
     public void printBoard(){
         // Format each row with the row number - [board values] - newline
         String rowFormat = " %s\t[ %s ] \n";
@@ -180,12 +157,6 @@ class GameBoard {
         System.out.println();
     }
 
-    /**
-     * Get all the coordinate neighbors of a point
-     * @param x The x coordinate
-     * @param y The y coordinate
-     * @return List of the neighbor coordinates of the point given
-     */
     private ArrayList<Coordinates> getNeighborCoordinates(int x, int y){
 
         ArrayList<Coordinates> neighborCoordinates = new ArrayList<>();
@@ -204,10 +175,6 @@ class GameBoard {
         return neighborCoordinates;
     }
 
-    /**
-     * Get a copy of the 2d board array
-     * @return A copy of the 2d board array
-     */
     static String[][] copyBoard(String[][] board){
         String[][] copy = new String[board.length][board.length];
 

@@ -1,14 +1,7 @@
 import java.util.*;
 
-/**
- * Class Name: Driver.java
- * Author's Name: Kenan Alkiek and Zhenpeng Li
- * Date: 2/25/18
- * Description of the class: Parse the arguments and run the game
- */
-
 /*
-Driver program for 2-person game containing a black and white player
+Driver program for 2-person game of Connect6
 
 Input arguments
 1. Size of the board
@@ -17,7 +10,7 @@ Input arguments
 4. -h for human -c for computer (the white player)
 5. Second player name
 
-Example  "java Driver 7 -h Kanchi -h Tim"
+Example  "java Driver 7 -h Kenan -h Tim"
 */
 
 
@@ -52,7 +45,7 @@ class Driver {
 
     /**
      * Read in where the user wants to play their two moves
-     * @param name        the player that the AI will identify as
+     * @param name The player that the AI will identify as
      * @return Move containing two user choices
      */
     private static Move getHumanMove(String name){
