@@ -26,6 +26,7 @@ public class AlphaBeta {
 
         for(Coordinates move: gameBoard.availableMoves){
 
+            // Connect6 each player has two turns before alternating so do the same thing for getMax
             if(index % 2 == 0){
                 turn = opponentTurn(turn);
                 maxPlayer = true;
@@ -58,6 +59,7 @@ public class AlphaBeta {
 
         for(Coordinates move: gameBoard.availableMoves){
 
+            // Connect6 each player has two turns before alternating so do the same thing for getMin
             if(index % 2 == 0){
                 turn = opponentTurn(turn);
                 maxPlayer = false;
